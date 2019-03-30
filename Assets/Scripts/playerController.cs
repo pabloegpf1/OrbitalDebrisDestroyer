@@ -13,6 +13,10 @@ public class playerController : MonoBehaviour
     private float xInput,zInput,mouseX,mouseY;
     private bool hoverUp,HoverDown = false;
 
+    public float TurningSpeed = 10;
+    Vector3 LookAtPos;
+    Vector3 SmoothedLookAtPos;
+
     void Start (){
         rigidBody = GetComponent<Rigidbody>();
         transform = GetComponent<Transform>();
@@ -37,7 +41,10 @@ public class playerController : MonoBehaviour
             inputVector -= Vector3.up * hoverSpeed;
         }
         
-        transform.Rotate(mouseY * Time.fixedDeltaTime, mouseX * Time.fixedDeltaTime , 0);
+        //transform.Rotate(mouseY * Time.fixedDeltaTime, mouseX * Time.fixedDeltaTime , 0);
+        LookAtPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+        SmoothedLookAtPos = Vector3.Lerp(SmoothedLookAtPos, LookAtPos, Time.deltaTime * 5);
+        transform.LookAt(SmoothedLookAtPos);
 
         if(rigidBody.velocity.magnitude <= maxSpeed){
             rigidBody.AddRelativeForce (inputVector * moveSpeed);
