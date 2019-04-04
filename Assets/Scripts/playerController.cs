@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
@@ -13,7 +12,7 @@ public class playerController : MonoBehaviour
     private float xInput,zInput,mouseX,mouseY;
     private bool hoverUp,HoverDown = false;
 
-    public float TurningSpeed = 10;
+    public float TurningSpeed = 5;
     Vector3 LookAtPos;
     Vector3 SmoothedLookAtPos;
 
@@ -25,13 +24,15 @@ public class playerController : MonoBehaviour
     void Update(){
         xInput = Input.GetAxis("Horizontal");
         zInput = Input.GetAxis("Vertical");
-        mouseX = Input.GetAxis("Mouse X") * rotateSpeed;
-        mouseY = -Input.GetAxis("Mouse Y") * rotateSpeed;
         hoverUp =  Input.GetKeyDown("left shift");
         HoverDown = Input.GetKeyDown("left ctrl");
     }
 
     void FixedUpdate(){
+
+        LookAtPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
+        SmoothedLookAtPos = Vector3.Lerp(SmoothedLookAtPos, LookAtPos, Time.deltaTime*5);
+        transform.LookAt(SmoothedLookAtPos);
           
         Vector3 inputVector = new Vector3 (xInput, 0.0f, zInput);
 
@@ -40,11 +41,6 @@ public class playerController : MonoBehaviour
         }else if(HoverDown){
             inputVector -= Vector3.up * hoverSpeed;
         }
-        
-        //transform.Rotate(mouseY * Time.fixedDeltaTime, mouseX * Time.fixedDeltaTime , 0);
-        LookAtPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100));
-        SmoothedLookAtPos = Vector3.Lerp(SmoothedLookAtPos, LookAtPos, Time.deltaTime * 5);
-        transform.LookAt(SmoothedLookAtPos);
 
         if(rigidBody.velocity.magnitude <= maxSpeed){
             rigidBody.AddRelativeForce (inputVector * moveSpeed);
