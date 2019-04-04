@@ -4,24 +4,17 @@ using System.Collections;
 public class bullet : MonoBehaviour {
 
 	public GameObject explo;
+	private float deleteTime = 5.0f;
 	
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
 	void Update () {
-
-	
+		deleteTime -= Time.deltaTime;
+     	if ( deleteTime < 0 ){
+         	Destroy(gameObject);
+     	}
 	}
-	
 	
 	void OnCollisionEnter(Collision col) {
-	
 		GameObject.Instantiate(explo, col.contacts[0].point, Quaternion.identity);
-	
 		Destroy(gameObject);
 	}
 	

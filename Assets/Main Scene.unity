@@ -439,7 +439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 6404073343645581419}
   control: {fileID: 4027460127802324133}
-  follow_distance: 45
+  follow_distance: 10
   camera_elevation: 2
   follow_tightness: 8
   rotation_tightness: 13
@@ -466,7 +466,7 @@ MonoBehaviour:
   center_speed: 5
   center_lock: 0
   invert_y_axis: 0
-  deadzone_radius: 50
+  deadzone_radius: 20
   thumbstick_speed_modifier: 1
   mouse_sensitivity_modifier: 15
   deadzone_rect:
@@ -933,8 +933,8 @@ MonoBehaviour:
   afterburner_speed: 40
   slow_speed: 4
   thrust_transition_speed: 5
-  turnspeed: 15
-  rollSpeedModifier: 7
+  turnspeed: 5
+  rollSpeedModifier: 10
   pitchYaw_strength: 0.5
   use_banking: 1
   bank_angle_clamp: 360

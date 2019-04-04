@@ -10,9 +10,8 @@ public class CustomPointer : MonoBehaviour {
 	
 	public bool use_mouse_input = false; //Pointer will be controlled by the mouse.
 	public bool use_gamepad_input = false; //Pointer will be controlled by a joystick
-	//public bool use_accelerometer_input = false;	//Pointer will be controlled by accelerometer
 	public bool pointer_returns_to_center = false; //Pointer will drift to the center of the screen (Use this for joysticks)
-	public bool instant_snapping = false; //If the pointer returns to the center, this will make it return to the center instantly when input is idle. Only works for joysticks
+	public bool instant_snapping = true; //If the pointer returns to the center, this will make it return to the center instantly when input is idle. Only works for joysticks
 	public float center_speed = 5f; //How fast the pointer returns to the center.
 
 	public bool center_lock = false; //Pointer graphic will be locked to the center. Also affects shooting raycast (always shoots to the center of the screen)
@@ -43,24 +42,13 @@ public class CustomPointer : MonoBehaviour {
 	
 		//Uncomment for Unity 5 to get rid of the warnings.
 		//Cursor.lockState = CursorLockMode.Locked;
-		//Cursor.visible = false;
+		Cursor.visible = false;
 		
 		Screen.lockCursor = true;
 		
-		
 		deadzone_rect = new Rect((Screen.width / 2) - (deadzone_radius), (Screen.height / 2) - (deadzone_radius), deadzone_radius * 2, deadzone_radius * 2);
-
-		if (pointerTexture == null)
-			Debug.LogWarning("(FlightControls) Warning: No texture set for the custom pointer!");
-			
-			
-		if (!use_mouse_input && !use_gamepad_input)
-			Debug.LogError("(FlightControls) No input method selected! See the Custom Pointer script on the Main Camera and select either mouse or gamepad.");
-			
-
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
 		if (use_mouse_input) {
@@ -88,22 +76,7 @@ public class CustomPointer : MonoBehaviour {
 			pointerPosition += new Vector2(x_axis * thumbstick_speed_modifier * Mathf.Pow(Input.GetAxis("Horizontal"), 2),
 				                               y_axis * thumbstick_speed_modifier * Mathf.Pow(Input.GetAxis("Vertical"), 2));
 
-		}/* else if (use_accelerometer_input) {
-			//WARNING: UNTESTED.
-			//This /should/ be fairly close to working, though.
-			//I would have tested this, but apparently Unity couldn't detect my Windows Phone 8 SDK.
-			
-			//Even though it's untested, the priciples of control are probably going to be very similar to the above two.
-			
-			float x_axis = Input.acceleration.x;
-			float y_axis = -Input.acceleration.z;
-		
-			pointerPosition += new Vector2(x_axis * thumbstick_speed_modifier * Mathf.Pow(Input.GetAxis("Horizontal"), 2),
-			                               y_axis * thumbstick_speed_modifier * Mathf.Pow(Input.GetAxis("Vertical"), 2));
-			
-		
-		
-		}*/
+		}
 		
 		//If the pointer returns to the center of the screen and it's not in the deadzone...
 		if (pointer_returns_to_center && !deadzone_rect.Contains(pointerPosition)) {
